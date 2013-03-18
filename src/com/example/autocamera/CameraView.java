@@ -1,26 +1,25 @@
 package com.example.autocamera;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.CameraInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-//import android.hardware.Camera;
+import android.widget.Toast;
 
 public class CameraView extends SurfaceView implements SurfaceHolder.Callback, Camera.PictureCallback {
 
@@ -28,6 +27,16 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 	private Camera camera;
 	private Context context;
 	private Timer timer = null;
+	
+	AutoFocusCallback focusCallback = new AutoFocusCallback() {
+		@Override
+		public void onAutoFocus(boolean success, Camera camera) {
+			System.out.println("take picture start ...");
+			camera.takePicture(null, null, CameraView.this);
+			System.out.println("BBBBBBBBBB");
+			System.out.println("-------------------");
+		}
+	};
 
 	public CameraView(Context context) {
 		super(context);
@@ -69,9 +78,19 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 		try {
 			Camera.Parameters perameters = camera.getParameters();
+			
+			List<Camera.Size> sizes = perameters.getSupportedPictureSizes();
+			for(Camera.Size s : sizes) {
+//				System.out.println(s.width + "," + s.height);
+//				perameters.setPreviewSize(s.width, s.height);
+//				break;
+			}
+			
 //			perameters.setPreviewSize(240, 320);
+			
+			perameters.setPictureSize(sizes.get(0).width, sizes.get(0).height);
 			camera.setParameters(perameters);
-			camera.autoFocus(null);
+			
 			camera.startPreview();
 			startTimer();
 		}
@@ -109,6 +128,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 		outStream.write(data);
 		outStream.close();
 		galleryAddPic(imageF.getPath());
+		Toast.makeText(this.context, "Save Pic Successfully!", Toast.LENGTH_LONG).show();
 //		String saved = MediaStore.Images.Media.insertImage(this.context.getContentResolver(), picture, imageFileName, "description");
 //        Uri sdCardUri = Uri.parse("file://" + Environment.getExternalStorageDirectory());
 //        this.context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, sdCardUri));
@@ -138,6 +158,13 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 	public void resume() {
 		this.startTimer();
 	}
+
+	private void doFocusAndTakePic() {
+		if(camera != null) {
+			System.out.println("focus start ...");
+			camera.autoFocus(focusCallback);
+		}
+	}
 	
 	private void startTimer() {
 		if(timer != null)
@@ -147,12 +174,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				if(camera != null) {
-					System.out.println("take picture start ...");
-					camera.takePicture(null, null, CameraView.this);
-					System.out.println("BBBBBBBBBB");
-					System.out.println("-------------------");
-				}
+				doFocusAndTakePic();
 			}
 		}, 3 * 1000, 5 * 1000);
 	}

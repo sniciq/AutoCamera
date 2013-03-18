@@ -2,7 +2,10 @@ package com.example.autocamera;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -15,9 +18,17 @@ public class MainActivity extends Activity {
 //		setContentView(R.layout.activity_main);
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		cameraView = new CameraView(this);
 		setContentView(cameraView);
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
 	@Override
