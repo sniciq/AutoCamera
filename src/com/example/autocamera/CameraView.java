@@ -86,9 +86,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 //				break;
 			}
 			
-//			perameters.setPreviewSize(240, 320);
-			
-			perameters.setPictureSize(sizes.get(0).width, sizes.get(0).height);
+//			perameters.setPictureSize(sizes.get(0).width, sizes.get(0).height);
 			camera.setParameters(perameters);
 			
 			camera.startPreview();
@@ -108,7 +106,12 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 	}
 	
 	private File getAlbumDir() {
-		return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "album");
+		String filePath = Environment.getExternalStorageDirectory().getPath() + "/" + getResources().getString(R.string.app_name) + "/pics/";
+		File f = new File(filePath);
+		if(!f.exists() && !f.isDirectory()) {
+			f.mkdirs();
+		}
+		return f;
 	}
 	
 	private void galleryAddPic(String path) {
@@ -140,7 +143,10 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 //			Bitmap picture = BitmapFactory.decodeByteArray(data, 0, data.length);
 //			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 //			picture.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-			savePicToGallery(data);
+			
+			//FIXME savePicToGallery
+//			savePicToGallery(data);
+			
 //			baos.close();
 			camera.startPreview();
 		}
@@ -178,6 +184,15 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 			}
 		}, 3 * 1000, 5 * 1000);
 	}
+
+//	@Override
+//	public boolean onTouchEvent(MotionEvent event) {
+//		// TODO Auto-generated method stub
+//		this.context.A
+//		this.context.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		return super.onTouchEvent(event);
+//	}
+	
 }
 
 ////∫· ˙∆¡«–ªª

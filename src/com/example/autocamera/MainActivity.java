@@ -1,12 +1,13 @@
 package com.example.autocamera;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 
 public class MainActivity extends Activity {
@@ -19,8 +20,21 @@ public class MainActivity extends Activity {
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getActionBar().hide();
 		cameraView = new CameraView(this);
+		cameraView.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(getActionBar().isShowing()) {
+					getActionBar().hide();
+				}
+				else {
+					getActionBar().show();
+				}
+				return false;
+			}
+		});
+		
 		setContentView(cameraView);
 	}
 
