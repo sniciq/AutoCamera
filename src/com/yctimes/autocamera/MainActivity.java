@@ -1,4 +1,6 @@
-package com.example.autocamera;
+package com.yctimes.autocamera;
+
+import com.example.autocamera.R;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,23 +19,23 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 //		setContentView(R.layout.activity_main);
-		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		getActionBar().hide();
+//		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//		getActionBar().hide();
 		cameraView = new CameraView(this);
-		cameraView.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if(getActionBar().isShowing()) {
-					getActionBar().hide();
-				}
-				else {
-					getActionBar().show();
-				}
-				return false;
-			}
-		});
+//		cameraView.setOnTouchListener(new OnTouchListener() {
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				if(getActionBar().isShowing()) {
+//					getActionBar().hide();
+//				}
+//				else {
+//					getActionBar().show();
+//				}
+//				return false;
+//			}
+//		});
 		
 		setContentView(cameraView);
 	}

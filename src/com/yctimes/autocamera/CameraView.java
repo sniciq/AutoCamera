@@ -1,4 +1,4 @@
-package com.example.autocamera;
+package com.yctimes.autocamera;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.example.autocamera.R;
 
 import android.content.Context;
 import android.content.Intent;
@@ -106,7 +108,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, C
 	}
 	
 	private File getAlbumDir() {
-		String filePath = Environment.getExternalStorageDirectory().getPath() + "/" + getResources().getString(R.string.app_name) + "/pics/";
+		String filePath = Environment.getExternalStorageDirectory().getPath() + "/" + getResources().getString(R.string.dir_name) + "/pics/";
 		File f = new File(filePath);
 		if(!f.exists() && !f.isDirectory()) {
 			f.mkdirs();
